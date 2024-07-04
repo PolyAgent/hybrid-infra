@@ -1,6 +1,6 @@
 python-dotenv
-jax
 keras-nlp
 keras
+jax
 tensorflow-hub
 tensorflow
