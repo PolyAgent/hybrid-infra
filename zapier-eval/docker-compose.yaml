@@ -1,0 +1,25 @@
+services:
+  zapier-eval:
+    image: jupyter-jax:v2
+    user: root    
+    devices:
+      - /dev/kfd
+      - /dev/dri/renderD144
+    security_opt:
+      - seccomp=unconfined
+    volumes:
+      - /mnt/nvme0/data/:/data 
+      - /mnt/nvme0/hf-models/gemma-ua-spm/:/tokenizer
+      - /mnt/nvme0/h5-models/:/ckpts
+      - /mnt/nvme0/output/:/output
+      - /home/antp/hybrid-infra/zapier-eval:/content
+      - /tmp/:/tmp
+      - /tmp/.cache:/root/.cache
+    ports:
+      - 48888:8888
+    tty: true
+    stdin_open: true
+    command: >
+      sh -c "
+        jupyter notebook --port 8888 --token colabToken --allow-root --no-browser --ip=0.0.0.0 --NotebookApp.token=colabToken 
+      "
