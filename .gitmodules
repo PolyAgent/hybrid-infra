@@ -1,0 +1,4 @@
+[submodule "zapier-eval/PNaCoS-NER-Metric"]
+	path = zapier-eval/PNaCoS-NER-Metric
+	url = git@github.com:PolyAgent/PNaCoS-NER-Metric.git
+	shallow = true
