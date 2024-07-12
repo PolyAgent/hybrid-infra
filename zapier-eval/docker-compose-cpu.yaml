@@ -1,0 +1,43 @@
+services:
+  zapier-eval-cpu:
+    image: jupyter-jax:v2
+    user: root    
+    volumes:
+      - /mnt/nvme1/data/:/data 
+      - /mnt/nvme1/hf-models/gemma-ua-spm/:/tokenizer
+      - /mnt/nvme1/hf-datasets/:/hf-datasets
+      - /mnt/nvme1/h5-models/:/ckpts
+      - /mnt/nvme1/output/:/output
+      - /home/antp/hybrid-infra/zapier-eval:/content
+      - /tmp/:/tmp
+      - /tmp/.cache:/root/.cache
+    ports:
+      - 58888:8888
+    tty: true
+    stdin_open: true
+    working_dir: /content
+    command: >
+      sh -c "
+        jupyter notebook --port 8888 --token colabToken --allow-root --no-browser --ip=0.0.0.0 --NotebookApp.token=colabToken 
+      "
+  zapier-eval-cpu-2:
+    image: jupyter-jax:v2
+    user: root    
+    volumes:
+      - /mnt/nvme0/data/:/data 
+      - /mnt/nvme0/hf-models/gemma-ua-spm/:/tokenizer
+      - /mnt/nvme0/hf-datasets/:/hf-datasets
+      - /mnt/nvme0/h5-models/:/ckpts
+      - /mnt/nvme0/output/:/output
+      - /home/antp/hybrid-infra/zapier-eval:/content
+      - /tmp/:/tmp
+      - /tmp/.cache:/root/.cache
+    ports:
+      - c68888:8888
+    tty: true
+    stdin_open: true
+    working_dir: /content
+    command: >
+      sh -c "
+        jupyter notebook --port 8888 --token colabToken --allow-root --no-browser --ip=0.0.0.0 --NotebookApp.token=colabToken 
+      "
