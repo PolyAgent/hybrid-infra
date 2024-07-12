@@ -263,7 +263,7 @@ time1 = datetime.now()
 duration_seconds = (time1 - time0).total_seconds()  # Convert timedelta to total seconds
 print(f"model.weights.h5 saved, time:{time1} it took {time1-time0}")
 print("==============================================================")
-print(f"Model size is ~96Gb so the average saving speed was {96/duration_seconds} Gb/s")
+print(f"Model size is ~96Gb so the average saving speed was {96.0/duration_seconds} Gb/s")
 
 
 # * Learn how to [get started with Keras Gemma](https://ai.google.dev/gemma/docs/get_started).
