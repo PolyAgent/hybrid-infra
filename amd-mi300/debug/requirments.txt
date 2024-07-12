@@ -1,0 +1,7 @@
+python-dotenv
+keras-nlp
+keras
+jax
+tensorflow-hub
+tensorflow
+tensorflow_dateset

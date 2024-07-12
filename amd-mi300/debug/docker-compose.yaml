@@ -1,0 +1,24 @@
+services:
+  jax-gpu4:
+    image: rocm/jax-community:latest
+    user: root    
+    env_file: .env
+    devices:
+      - /dev/kfd
+      - /dev/dri/renderD160 
+      - /dev/dri/renderD168 
+      - /dev/dri/renderD184 
+      - /dev/dri/renderD176
+    security_opt:
+      - seccomp=unconfined
+    volumes:
+      - /tmp/:/tmp
+      - /tmp/.cache:/root/.cache
+      - ./:/content
+    ports:
+      - 8888:8888
+    tty: true
+    stdin_open: true
+    working_dir: /content
+    command: >
+      bash
