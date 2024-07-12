@@ -1,5 +1,5 @@
 services:
-  jax-gpu4:
+  rocm-jax-gpu4:
     image: rocm/jax-community:latest
     user: root    
     env_file: .env

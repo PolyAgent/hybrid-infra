@@ -260,22 +260,11 @@ print(f"Start saving weights, time:{time0}")
 # Note that enabling LoRA reduces the number of trainable parameters significantly, from 7 billion to only 11 million.
 gemma_lm.save_weights("./model.weights.h5")
 time1 = datetime.now()
+duration_seconds = (time1 - time0).total_seconds()  # Convert timedelta to total seconds
 print(f"model.weights.h5 saved, time:{time1} it took {time1-time0}")
 print("==============================================================")
-print(f"Model size is ~96Gb so the average saving speed was {96/float(time1-time0)} Gb/s")
-# ## Inference after finetuning
+print(f"Model size is ~96Gb so the average saving speed was {96/duration_seconds} Gb/s")
 
 
-# In[ ]:
-
-
-
-
-# After finetuning, the model has learned the style of movie reviews and is now generating output in that style in the context of 90s comedy movies.
-
-# ## What's next
-# 
-# In this tutorial, you learned how to using KerasNLP JAX backend to finetune a Gemma model on the IMDb dataset in a distributed manner on the powerful TPUs. Here are a few suggestions for what else to learn:
-# 
 # * Learn how to [get started with Keras Gemma](https://ai.google.dev/gemma/docs/get_started).
 # * Learn how to [finetune the Gemma model on GPU](https://ai.google.dev/gemma/docs/lora_tuning).
