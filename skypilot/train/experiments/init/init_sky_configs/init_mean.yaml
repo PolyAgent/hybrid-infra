@@ -1,0 +1,44 @@
+name: mean_init
+
+resources:
+  accelerators: H100:8
+  cloud: gcp
+  use_spot: True
+  # zone: us-central1-a
+  region: us-central1
+  # image_id: projects/deeplearning-platform-release/global/images/pytorch-2-1-cu121-v20240708-ubuntu-2204-py310
+  image_id: projects/deeplearning-platform-release/global/images/pytorch-2-2-cu121-v20240708-ubuntu-2204-py310
+
+workdir: .
+
+file_mounts:
+  /data:
+    source: ${BUCKET}
+    mode: MOUNT
+
+setup: |
+  echo $HF_TOKEN
+  mkdir -p /home/gcpuser/ramdisk
+  sudo mount -t tmpfs -o size=512G tmpfs /home/gcpuser/ramdisk
+  # sudo apt update && sudo apt install nvtop libaio-dev -y
+  mkdir -p /home/gcpuser/ramdisk/.cache/huggingface
+  # rsync -av /data/huggingface_cache/datasets /home/gcpuser/ramdisk/.cache/huggingface/.
+run: |
+  echo $HF_TOKEN
+  cd /home/gcpuser/ramdisk
+  echo $HF_HOME
+  cp /data/venv_alignment_handbook_v2.tar.lz4 venv_alignment_handbook_v2.tar.lz4
+  echo "lz4 archive downloaded"
+  tar --use-compress-program=lz4 -xf venv_alignment_handbook_v2.tar.lz4
+  source alignment-handbook/venv/bin/activate
+  echo "alignment-handbook venv activated"
+  cd /home/gcpuser/sky_workdir
+  ACCELERATE_LOG_LEVEL=info accelerate launch --config_file /home/gcpuser/ramdisk/alignment-handbook/recipes/accelerate_configs/deepspeed_zero3.yaml \
+    code/run_cpt_dataset_stream.py \
+    init_configs/config_mean.yaml
+
+envs:
+  HF_TOKEN: ""
+  HF_HOME: "/home/gcpuser/ramdisk/.cache/huggingface"
+  BUCKET: gs://gpu-research-cloud-1
+  WANDB_API_KEY: ""
